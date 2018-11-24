@@ -1,8 +1,8 @@
 var algoliasearch = require('algoliasearch');
 
 /**
- * A basic Hello World function
- * @param {string} storageId Who you're saying hello to
+ * retrieves storage items
+ * @param {string} storageId id of the storage object to retrieve
  * @returns {object}
  */
 module.exports = (storageId, context, callback) => {

@@ -1,8 +1,8 @@
 var algoliasearch = require('algoliasearch');
 
 /**
- * A basic Hello World function
- * @param {string} userId Who you're saying hello to
+ * Retrieving user profiles
+ * @param {string} userId UserId to retrieve
  * @returns {object}
  */
 module.exports = (userId, context, callback) => {
