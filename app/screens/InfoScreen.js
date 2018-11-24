@@ -20,7 +20,7 @@ export default class InfoScreen extends React.Component {
     let storage = this.props.navigation.getParam('storage', null);
     return (
       <View style={styles.container}>
-        <Image style={styles.image} source={{uri: "https://img.artpal.com/77573/14-15-6-7-1-24-2m.jpg"}}>
+        <Image style={styles.image} source={{uri: storage.photo}}>
         </Image>
         <View style={styles.information}>
           <View style={styles.row}>

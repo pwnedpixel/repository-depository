@@ -60,7 +60,7 @@ export default class ListingsScreen extends React.Component {
             data={this.state.listings}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
-              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit')}>
+              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit', {storage: item})}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.title}</Text></View>
                   <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
