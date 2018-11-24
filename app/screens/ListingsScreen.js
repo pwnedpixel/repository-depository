@@ -29,7 +29,7 @@ export default class ListingsScreen extends React.Component {
 
   _getListingsInfoAsync = async (listings) => {
     let that = this;
-    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage/?storageId=' + JSON.stringify(listings))
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=' + JSON.stringify(listings))
       .then(function(response) {
         return response.json();
       })
@@ -62,7 +62,7 @@ export default class ListingsScreen extends React.Component {
             renderItem={({item}) =>
               <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit')}>
                 <View style={styles.row}>
-                  <View style={styles.leftCol}><Text style={styles.name}>{item.location}</Text></View>
+                  <View style={styles.leftCol}><Text style={styles.name}>{item.title}</Text></View>
                   <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
                 </View>
               </TouchableOpacity>
