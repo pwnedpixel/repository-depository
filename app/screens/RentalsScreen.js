@@ -38,17 +38,6 @@ export default class RentalsScreen extends React.Component {
       });
   };
 
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          backgroundColor: "#CED0CE",
-        }}
-      />
-    );
-  };
-
   _onRefresh = () => {
     this.setState({refreshing: true});
     this._getUserRentalsAsync();
@@ -70,11 +59,12 @@ export default class RentalsScreen extends React.Component {
           showsVerticalScrollIndicator={false}
           renderItem={({item}) =>
             <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Status')}>
-              <View style={styles.leftCol}><Text style={styles.name}>{item.owner}</Text></View>
-              <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
+              <View style={styles.row}>
+                <View style={styles.leftCol}><Text style={styles.name}>{item.owner}</Text></View>
+                <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
+              </View>
             </TouchableOpacity>
           }
-          ItemSeparatorComponent={this.renderSeparator}
           keyExtractor={item => item.objectID}
         />
       </ScrollView>
@@ -85,13 +75,21 @@ export default class RentalsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 5,
-    backgroundColor: '#fff',
+    marginTop: 5,
   },
   flatview: {
-    justifyContent: 'center',
+    padding: 5,
+    alignItems: 'center'
+  },
+  row: {
+    overflow: "hidden",
+    width: "95%",
+    borderRadius: 10,
+    flex: 1,
     padding: 15,
-    flexDirection: 'row'
+    backgroundColor: "white",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   leftCol: {
     flex: 1
