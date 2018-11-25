@@ -17,21 +17,19 @@ export default class FindScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { sliderVal: 50, lat: 0, long: 0, storages: [{lat: 43.0045047, long: -81.2762352, price: 50}, {lat: 43.0044500, long: -81.2450200, price: 55}] };
-    this._getLocationAsync();
+    this.state = { sliderVal: 50, lat: 0, long: 0, storages: [] };
+    this._getStoragesAsync();
   }
 
-  getStorage() {
-  }
-
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    let location = await Location.getCurrentPositionAsync({});
-    console.log(location);
-    this.setState({ 
-      lat: location.coords.latitude, 
-      long: location.coords.longitude
-    })
+  _getStoragesAsync = async () => {
+    let that = this;
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=[]&onlyAvailable=true&getAll=true')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        that.setState({storages: myJson});
+      });
   };
 
   render() {
@@ -47,14 +45,14 @@ export default class FindScreen extends React.Component {
           }}
         >
           {
-            this.state.storages.map( storage => 
+            this.state.storages.filter(storage => storage.price < this.state.sliderVal).map( storage => 
               <MapView.Marker
-                key={storage.lat.toString()}
+                key={storage.objectID.toString()}
                 coordinate={{
                   latitude: storage.lat,
                   longitude: storage.long 
                 }}
-                onPress={e => this.props.navigation.navigate('Info')}
+                onPress={e => this.props.navigation.navigate('Info', {storage: storage})}
               >
                 <View style={styles.marker}>
                   <Text style={styles.markerText}>{"$" + storage.price}</Text>

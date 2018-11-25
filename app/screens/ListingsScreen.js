@@ -29,26 +29,14 @@ export default class ListingsScreen extends React.Component {
 
   _getListingsInfoAsync = async (listings) => {
     let that = this;
-    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage/?storageId=' + JSON.stringify(listings))
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=' + JSON.stringify(listings))
       .then(function(response) {
         return response.json();
       })
       .then(function(myJson) {
-        console.log(":)");
         that.setState({listings: myJson, refreshing: false});
       });
   }; 
-
-  renderSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          backgroundColor: "#CED0CE",
-        }}
-      />
-    );
-  };
 
   _onRefresh = () => {
     this.setState({refreshing: true});
@@ -71,18 +59,19 @@ export default class ListingsScreen extends React.Component {
             data={this.state.listings}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
-              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit')}>
-                <View style={styles.leftCol}><Text style={styles.name}>{item.location}</Text></View>
-                <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
+              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit', {storage: item, new: false})}>
+                <View style={styles.row}>
+                  <View style={styles.leftCol}><Text style={styles.name}>{item.title}</Text></View>
+                  <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
+                </View>
               </TouchableOpacity>
             }
-            ItemSeparatorComponent={this.renderSeparator}
             keyExtractor={item => item.objectID}
           />
         </ScrollView>
         <ActionButton
           buttonColor={colors.tintColor}
-          onPress={() => this.props.navigation.navigate('Edit') }
+          onPress={() => this.props.navigation.navigate('Edit', { new: true, storage: {title: "Name your storage", price: 0, size: 0, owner: this.props.screenProps.name, lat: 43.0045047, long: -81.2762352}}) }
         />
       </View>
     );
@@ -93,12 +82,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 5,
-    backgroundColor: '#fff',
   },
   flatview: {
-    justifyContent: 'center',
+    padding: 5,
+    alignItems: 'center'
+  },
+  row: {
+    overflow: "hidden",
+    width: "95%",
+    borderRadius: 10,
+    flex: 1,
     padding: 15,
-    flexDirection: 'row'
+    backgroundColor: "white",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   leftCol: {
     flex: 1
