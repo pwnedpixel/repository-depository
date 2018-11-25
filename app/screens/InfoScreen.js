@@ -24,7 +24,7 @@ export default class InfoScreen extends React.Component {
 
   _rent() {
     let that = this;
-    let payload = {renter: this.props.screenProps.name, renterId: this.props.screenProps.userId};
+    let payload = {renter: this.props.screenProps.name, renterId: this.props.screenProps.userId, events: []};
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
     fetch('https://pwnedpixel.lib.id/repository-depository@dev/getuser/?userId=' + this.props.screenProps.userId)
       .then(function(response) {

@@ -32,7 +32,7 @@ export default class StatusScreen extends React.Component {
 
   _unrent() {
     let that = this;
-    let payload = {renter: "", renterId: ""};
+    let payload = {renter: "", renterId: "", events: []};
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
     fetch('https://pwnedpixel.lib.id/repository-depository@dev/getuser/?userId=' + this.props.screenProps.userId)
       .then(function(response) {
