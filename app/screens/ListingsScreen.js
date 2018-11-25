@@ -34,7 +34,6 @@ export default class ListingsScreen extends React.Component {
         return response.json();
       })
       .then(function(myJson) {
-        console.log(":)");
         that.setState({listings: myJson, refreshing: false});
       });
   }; 
@@ -60,7 +59,7 @@ export default class ListingsScreen extends React.Component {
             data={this.state.listings}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
-              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit', {storage: item})}>
+              <TouchableOpacity style={styles.flatview} onPress={() => this.props.navigation.navigate('Edit', {storage: item, new: false})}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.title}</Text></View>
                   <View style={styles.rightCol}><Text style={styles.price}>{"$" + item.price + "/month"}</Text></View>
@@ -72,7 +71,7 @@ export default class ListingsScreen extends React.Component {
         </ScrollView>
         <ActionButton
           buttonColor={colors.tintColor}
-          onPress={() => this.props.navigation.navigate('Edit') }
+          onPress={() => this.props.navigation.navigate('Edit', { new: true, storage: {title: "Name your storage", price: 0, size: 0, owner: this.props.screenProps.name, lat: 43.0045047, long: -81.2762352}}) }
         />
       </View>
     );

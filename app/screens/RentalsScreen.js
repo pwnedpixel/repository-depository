@@ -33,7 +33,6 @@ export default class RentalsScreen extends React.Component {
         return response.json();
       })
       .then(function(myJson) {
-        console.log(":)");
         that.setState({rentals: myJson, refreshing: false});
       });
   };

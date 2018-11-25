@@ -23,7 +23,7 @@ export default class FindScreen extends React.Component {
 
   _getStoragesAsync = async () => {
     let that = this;
-    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=[]&onlyAvailable=true')
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=[]&onlyAvailable=true&getAll=true')
       .then(function(response) {
         return response.json();
       })

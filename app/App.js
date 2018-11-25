@@ -6,7 +6,9 @@ import AppNavigator from './navigation/AppNavigator';
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
-    userId: 12345
+    userId: 12345,
+    objectId: 1775890,
+    name: "Charles"
   };
 
   render() {
@@ -22,7 +24,7 @@ export default class App extends React.Component {
       return (
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator screenProps={{userId: this.state.userId}}/>
+          <AppNavigator screenProps={{userId: this.state.userId, name: this.state.name, objectId: this.state.objectId}}/>
         </View>
       );
     }
