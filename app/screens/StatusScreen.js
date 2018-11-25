@@ -6,10 +6,12 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Button,
+  ToastAndroid
 } from 'react-native';
 import colors from '../constants/Colors';
-import dimens from '../constants/Layout'
+import dimens from '../constants/Layout';
 
 export default class StatusScreen extends React.Component {
   static navigationOptions = {
@@ -17,6 +19,38 @@ export default class StatusScreen extends React.Component {
     headerTintColor: colors.headerTintColor,
     title: "Storage Title",
   };
+
+  constructor(props){
+    super(props);
+    this.state = { storage: this.props.navigation.getParam('storage', null) };
+  }
+
+  getDate(ms) {
+    d = new Date(ms)
+    return d.toString().split(" ").splice(0,5).join(" ")
+  }
+
+  _unrent() {
+    let that = this;
+    let payload = {renter: "", renterId: "", events: []};
+    fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getuser/?userId=' + this.props.screenProps.userId)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        let renting = myJson.renting;
+        let index = renting.indexOf(that.state.storage.storageId)
+        renting.pop(index);
+        that._updateUserRentals(renting);
+      });
+  }
+
+  _updateUserRentals(renting){
+    let payload = {renting: renting};
+    fetch("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
+    ToastAndroid.show('Request success!', ToastAndroid.SHORT);
+  }
 
   render() {
     let storage = this.props.navigation.getParam('storage', {price: 0, size: 0});
@@ -46,18 +80,21 @@ export default class StatusScreen extends React.Component {
             <View style={styles.leftCol}><Text style={styles.title}>Events</Text></View>
           </View>
           <FlatList
-            data={storage.events}
+            data={storage.events.reverse()}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
               <TouchableOpacity style={styles.flatview} onPress={() => {this.props.navigation.navigate('Event',{event: item})}}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.action}</Text></View>
-                  <View style={styles.rightCol}><Text style={styles.price}>{(new Date(0)).setUTCSeconds(item.time)}</Text></View>
+                  <View style={styles.rightCol}><Text style={styles.price}>{this.getDate(item.time)}</Text></View>
                 </View>
               </TouchableOpacity>
             }
             keyExtractor={item => item.time.toString()}
           />
+          <View style={{alignItems: 'center', paddingTop: 15}}>
+            <View style={{width: 200}}><Button onPress={() => {this._unrent()}} title={"unRent Me"}/></View>
+          </View>
         </View>
       </ScrollView>
     );
