@@ -6,10 +6,12 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Button,
+  ToastAndroid
 } from 'react-native';
 import colors from '../constants/Colors';
-import dimens from '../constants/Layout'
+import dimens from '../constants/Layout';
 
 export default class StatusScreen extends React.Component {
   static navigationOptions = {
@@ -18,9 +20,36 @@ export default class StatusScreen extends React.Component {
     title: "Storage Title",
   };
 
+  constructor(props){
+    super(props);
+    this.state = { storage: this.props.navigation.getParam('storage', null) };
+  }
+
   getDate(ms) {
     d = new Date(ms)
     return d.toString().split(" ").splice(0,5).join(" ")
+  }
+
+  _unrent() {
+    let that = this;
+    let payload = {renter: "", renterId: ""};
+    fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
+    fetch('https://pwnedpixel.lib.id/repository-depository@dev/getuser/?userId=' + this.props.screenProps.userId)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        let renting = myJson.renting;
+        let index = renting.indexOf(that.state.storage.storageId)
+        renting.pop(index);
+        that._updateUserRentals(renting);
+      });
+  }
+
+  _updateUserRentals(renting){
+    let payload = {renting: renting};
+    fetch("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
+    ToastAndroid.show('Request success!', ToastAndroid.SHORT);
   }
 
   render() {
@@ -63,6 +92,9 @@ export default class StatusScreen extends React.Component {
             }
             keyExtractor={item => item.time.toString()}
           />
+          <View style={{alignItems: 'center', paddingTop: 15}}>
+            <View style={{width: 200}}><Button onPress={() => {this._unrent()}} title={"unRent Me"}/></View>
+          </View>
         </View>
       </ScrollView>
     );
