@@ -5,7 +5,8 @@
   "author": "pwnedpixel <andy@akeech.com>",
   "main": "functions/__main__.js",
   "dependencies": {
-    "algoliasearch": "^3.30.0"
+    "algoliasearch": "^3.30.0",
+    "face-api.js": "^0.16.1"
   },
   "private": true,
   "stdlib": {
