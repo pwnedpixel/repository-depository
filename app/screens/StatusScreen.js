@@ -18,6 +18,11 @@ export default class StatusScreen extends React.Component {
     title: "Storage Title",
   };
 
+  getDate(ms) {
+    d = new Date(ms)
+    return d.toString().split(" ").splice(0,5).join(" ")
+  }
+
   render() {
     let storage = this.props.navigation.getParam('storage', {price: 0, size: 0});
     return (
@@ -46,13 +51,13 @@ export default class StatusScreen extends React.Component {
             <View style={styles.leftCol}><Text style={styles.title}>Events</Text></View>
           </View>
           <FlatList
-            data={storage.events}
+            data={storage.events.reverse()}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
               <TouchableOpacity style={styles.flatview} onPress={() => {this.props.navigation.navigate('Event',{event: item})}}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.action}</Text></View>
-                  <View style={styles.rightCol}><Text style={styles.price}>{(new Date(0)).setUTCSeconds(item.time)}</Text></View>
+                  <View style={styles.rightCol}><Text style={styles.price}>{this.getDate(item.time)}</Text></View>
                 </View>
               </TouchableOpacity>
             }
