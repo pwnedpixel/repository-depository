@@ -40,6 +40,7 @@ export default class FindScreen extends React.Component {
       <View style={styles.container}>
         <MapView
           style={styles.map}
+          showsUserLocation={true}
           initialRegion={{
             latitude: 43.0045047,
             longitude: -81.2762352,

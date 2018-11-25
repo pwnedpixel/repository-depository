@@ -85,8 +85,8 @@ export default class EditScreen extends React.Component {
       storageId: storageId,
       events: [],
       owner: this.props.screenProps.name,
-      lat: 43.0045047,
-      long: -81.2762352,
+      lat: this.state.lat,
+      long: this.state.long,
       ownerId: this.props.screenProps.userId,
       renter: "",
       renterId: "",
@@ -146,6 +146,7 @@ export default class EditScreen extends React.Component {
       
             <MapView
               style={styles.map}
+              showsUserLocation={true}
               draggab
               initialRegion={{
                 latitude: 43.0045047,
@@ -159,6 +160,7 @@ export default class EditScreen extends React.Component {
                   latitude: this.state.lat,
                   longitude: this.state.long
                 }}
+                pinColor={colors.tintColor}
                 onDragEnd={(e) => this.setState({lat: e.nativeEvent.coordinate.latitude, long: e.nativeEvent.coordinate.longitude})}
               />
             </MapView>
