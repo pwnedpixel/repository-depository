@@ -24,7 +24,8 @@ export default class InfoScreen extends React.Component {
 
   _rent() {
     let that = this;
-    //fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&renter="+this.props.screenProps.name+"&renterId="+this.props.screenProps.userId);
+    let payload = {renter: this.props.screenProps.name, renterId: this.props.screenProps.userId};
+    fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
     fetch('https://pwnedpixel.lib.id/repository-depository@dev/getuser/?userId=' + this.props.screenProps.userId)
       .then(function(response) {
         return response.json();
@@ -38,7 +39,6 @@ export default class InfoScreen extends React.Component {
 
   _updateUserRentals(renting){
     let payload = {renting: renting};
-    console.log("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
     ToastAndroid.show('Request success!', ToastAndroid.SHORT);
   }

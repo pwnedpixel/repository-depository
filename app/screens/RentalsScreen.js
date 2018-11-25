@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, ScrollView, StyleSheet, View, Button, FlatList, Text,  RefreshControl } from 'react-native';
+import { TouchableOpacity, ScrollView, StyleSheet, View, ToastAndroid, Button, FlatList, Text,  RefreshControl } from 'react-native';
 import colors from '../constants/Colors';
 
 export default class RentalsScreen extends React.Component {
@@ -13,6 +13,7 @@ export default class RentalsScreen extends React.Component {
     super(props);
     this.state = { refreshing: false, rentals: [] };
     this._getUserRentalsAsync();
+    ToastAndroid.show('Fetching your rentals...', ToastAndroid.SHORT);
   }
 
   _getUserRentalsAsync = async () => {

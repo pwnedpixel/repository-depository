@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, ScrollView, StyleSheet, View, Button, FlatList, Text, RefreshControl} from 'react-native';
+import { TouchableOpacity, ScrollView, StyleSheet, View, ToastAndroid, FlatList, Text, RefreshControl} from 'react-native';
 import ActionButton from 'react-native-action-button';
 import colors from '../constants/Colors';
 
@@ -14,6 +14,7 @@ export default class ListingsScreen extends React.Component {
     super(props);
     this.state = { refreshing: false, listings: [] };
     this._getUserListingsAsync();
+    ToastAndroid.show('Getting your listings...', ToastAndroid.SHORT)
   }
 
   _getUserListingsAsync = async () => {

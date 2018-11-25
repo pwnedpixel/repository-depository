@@ -5,7 +5,7 @@ import {
   Text,
   Slider,
   TouchableOpacity,
-  Image
+  ToastAndroid,
 } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
 import colors from '../constants/Colors';
@@ -25,6 +25,7 @@ export default class FindScreen extends React.Component {
 
   _getStoragesAsync = async () => {
     let that = this;
+    ToastAndroid.show('Getting nearby storages...', ToastAndroid.SHORT);
     fetch('https://pwnedpixel.lib.id/repository-depository@dev/getstorage?storageId=[]&onlyAvailable=true&getAll=true')
       .then(function(response) {
         return response.json();

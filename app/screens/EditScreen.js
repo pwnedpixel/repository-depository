@@ -50,12 +50,11 @@ export default class EditScreen extends React.Component {
     fetch("https://local-index-222414.appspot.com/upload?usage=storage&objectID=" + this.state.storage.objectID, {
       method: 'post',
       body: data
-    }).then(function(imgUrl) {
-      console.log(imgUrl);
     })
   }
 
   _create() {
+    let that = this;
     console.log(this.state.photo);
     const data = new FormData();
     data.append('file', {
@@ -63,18 +62,21 @@ export default class EditScreen extends React.Component {
       type: 'image/png',
       name: new Date().getTime().toString()
     });
-    fetch("https://local-index-222414.appspot.com/upload?usage=storage&objectID=0", {
+    fetch("https://local-index-222414.appspot.com/upload?usage=other&objectID=0", {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       method: 'post',
       body: data
+    }).then(function(response) {
+      return response.json()
     }).then(function(imgUrl) {
       console.log(imgUrl);
+      that._createStorage(imgUrl.url);
     })
   }
 
-  _create2() {
+  _createStorage(imgUrl) {
     let storageId = new Date().getTime();
     let payload = {
       price: parseInt(this.state.price), 
@@ -88,8 +90,9 @@ export default class EditScreen extends React.Component {
       ownerId: this.props.screenProps.userId,
       renter: "",
       renterId: "",
-      photo: "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png",
+      photo: imgUrl,
     };
+    console.log("https://pwnedpixel.lib.id/repository-depository@dev/createstorage?storageId=''&payload="+JSON.stringify(payload));
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/createstorage?storageId=''&payload="+JSON.stringify(payload));
     this._updateUser(storageId);
   }
@@ -103,15 +106,17 @@ export default class EditScreen extends React.Component {
       .then(function(myJson) {
         let offering = myJson.offering;
         offering.push(storageId);
+        console.log(offering);
         that._updateUserListings(offering);
       });
   }
 
   _updateUserListings(offering){
     let payload = {offering: offering};
-    console.log("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
+    console.log(payload);
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/edituser?objectID="+this.props.screenProps.objectId+"&payload="+JSON.stringify(payload));
     ToastAndroid.show('Listing Created!', ToastAndroid.SHORT);
+    this.setState({new : false});
   }
 
   render() {
