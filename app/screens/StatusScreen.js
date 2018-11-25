@@ -52,7 +52,7 @@ export default class StatusScreen extends React.Component {
               <TouchableOpacity style={styles.flatview} onPress={() => {this.props.navigation.navigate('Event',{event: item})}}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.action}</Text></View>
-                  <View style={styles.rightCol}><Text style={styles.price}>{item.time}</Text></View>
+                  <View style={styles.rightCol}><Text style={styles.price}>{(new Date(0)).setUTCSeconds(item.time)}</Text></View>
                 </View>
               </TouchableOpacity>
             }
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rightCol: {
-    flex: 1,
+    flex: 3,
   },
   rightColText: {
     textAlign: 'right',
