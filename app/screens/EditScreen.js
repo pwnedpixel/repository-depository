@@ -45,11 +45,13 @@ export default class EditScreen extends React.Component {
     data.append('file', {
       uri: this.state.photo,
       type: 'image/png',
-      name: this.state.storage.objectID.toString()
+      name: new Date().getTime().toString()
     });
     fetch("https://local-index-222414.appspot.com/upload?usage=storage&objectID=" + this.state.storage.objectID, {
       method: 'post',
       body: data
+    }).then(function(imgUrl) {
+      console.log(imgUrl);
     })
   }
 
@@ -59,7 +61,7 @@ export default class EditScreen extends React.Component {
     data.append('file', {
       uri: this.state.photo,
       type: 'image/png',
-      name: new Date().getTime()
+      name: new Date().getTime().toString()
     });
     fetch("https://local-index-222414.appspot.com/upload?usage=storage&objectID=0", {
       headers: {
