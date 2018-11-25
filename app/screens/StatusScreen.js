@@ -22,7 +22,7 @@ export default class StatusScreen extends React.Component {
     let storage = this.props.navigation.getParam('storage', {price: 0, size: 0});
     return (
       <ScrollView style={styles.container}>
-        <Image style={styles.image} source={{uri: "https://img.artpal.com/77573/14-15-6-7-1-24-2m.jpg"}}>
+        <Image style={styles.image} source={{uri: storage.photo ? storage.photo: "https://img.artpal.com/77573/14-15-6-7-1-24-2m.jpg"}}>
         </Image>
         <View style={styles.information}>
           <View style={styles.row}>
@@ -49,14 +49,14 @@ export default class StatusScreen extends React.Component {
             data={storage.events}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) =>
-              <TouchableOpacity style={styles.flatview} onPress={() => {}}>
+              <TouchableOpacity style={styles.flatview} onPress={() => {this.props.navigation.navigate('Event',{event: item})}}>
                 <View style={styles.row}>
                   <View style={styles.leftCol}><Text style={styles.name}>{item.action}</Text></View>
                   <View style={styles.rightCol}><Text style={styles.price}>{item.time}</Text></View>
                 </View>
               </TouchableOpacity>
             }
-            keyExtractor={item => item.objectID}
+            keyExtractor={item => item.time.toString()}
           />
         </View>
       </ScrollView>

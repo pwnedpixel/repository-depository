@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import colors from '../constants/Colors';
 import { ImagePicker, MapView } from 'expo';
-import Geocoder from 'react-native-geocoding';
 
 export default class EditScreen extends React.Component {
   static navigationOptions = {
@@ -23,9 +22,8 @@ export default class EditScreen extends React.Component {
 
   constructor(props){
     super(props);
-    Geocoder.init(keys.gMaps);
     let storage = this.props.navigation.getParam('storage', {price: 0, size: 0});
-    this.state = { new: this.props.navigation.getParam('new', false), storage: storage, title: storage.title, price: storage.price.toString(), size: storage.size.toString(), photo: storage.photo ? storage.photo : "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png" };
+    this.state = { new: this.props.navigation.getParam('new', false), lat: storage.lat, long: storage.long, storage: storage, title: storage.title, price: storage.price.toString(), size: storage.size.toString(), photo: storage.photo ? storage.photo : "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png" };
   }
 
   _pickImage = async () => {
@@ -40,9 +38,8 @@ export default class EditScreen extends React.Component {
   };
 
   _update() {
-    let payload = {price: parseInt(this.state.price), size: parseInt(this.state.size), title: this.state.title.toString()};
+    let payload = {price: parseInt(this.state.price), size: parseInt(this.state.size), title: this.state.title.toString(), lat: this.state.lat, long: this.state.long};
     fetch("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
-    console.log("https://pwnedpixel.lib.id/repository-depository@dev/editstorage?objectID="+this.state.storage.objectID+"&payload="+JSON.stringify(payload));
     ToastAndroid.show('Listing Updated!', ToastAndroid.SHORT);
     const data = new FormData();
     data.append('file', {
@@ -57,6 +54,25 @@ export default class EditScreen extends React.Component {
   }
 
   _create() {
+    console.log(this.state.photo);
+    const data = new FormData();
+    data.append('file', {
+      uri: this.state.photo,
+      type: 'image/png',
+      name: new Date().getTime()
+    });
+    fetch("https://local-index-222414.appspot.com/upload?usage=storage&objectID=0", {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      method: 'post',
+      body: data
+    }).then(function(imgUrl) {
+      console.log(imgUrl);
+    })
+  }
+
+  _create2() {
     let storageId = new Date().getTime();
     let payload = {
       price: parseInt(this.state.price), 
@@ -133,10 +149,10 @@ export default class EditScreen extends React.Component {
             >
               <MapView.Marker draggable
                 coordinate={{
-                  latitude: this.state.storage.lat,
-                  longitude: this.state.storage.long
+                  latitude: this.state.lat,
+                  longitude: this.state.long
                 }}
-                onDragEnd={(e) => console.log(e.nativeEvent.coordinate)}
+                onDragEnd={(e) => this.setState({lat: e.nativeEvent.coordinate.latitude, long: e.nativeEvent.coordinate.longitude})}
               />
             </MapView>
         

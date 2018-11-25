@@ -9,6 +9,7 @@ import ListingsScreen from '../screens/ListingsScreen';
 import EditScreen from '../screens/EditScreen';
 import StatusScreen from '../screens/StatusScreen';
 import InfoScreen from '../screens/InfoScreen';
+import EventScreen from '../screens/EventScreen';
 
 const FindStack = createStackNavigator({
   Find: FindScreen,
@@ -31,7 +32,8 @@ FindStack.navigationOptions = {
 
 const RentalsStack = createStackNavigator({
   Rentals: RentalsScreen,
-  Status: StatusScreen
+  Status: StatusScreen,
+  Event: EventScreen
 });
 
 RentalsStack.navigationOptions = {
